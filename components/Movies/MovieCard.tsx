@@ -6,7 +6,6 @@ import {
 } from "@/components/ui/tooltip";
 import Image from "next/image";
 import Link from "next/link";
-import { TMovie } from "./MovieList";
 import Rating from "./Rating";
 
 const MovieCard = ({
