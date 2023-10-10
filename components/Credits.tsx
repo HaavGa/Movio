@@ -1,11 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-type CreditsProps = {
-  array: string[];
-  id: number[];
-  image: string[];
-};
 
 const Credits = ({ array, id, image }: CreditsProps) => {
   return (

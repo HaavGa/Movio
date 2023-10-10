@@ -10,13 +10,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
 
-type CreditsCollapsibleProps = {
-  image: string[];
-  id: number[];
-  array: string[];
-  title: string;
-};
-
 const CreditsCollapsible = ({
   image,
   id,

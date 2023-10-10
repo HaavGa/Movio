@@ -22,6 +22,7 @@ const MovieInformation = () => {
   // @ts-ignore
   const { data, isFetching, error }: MovieQueryProps =
     useGetMovieQuery(id as unknown as number);
+  console.log(data);
 
   if (isFetching) {
     return (

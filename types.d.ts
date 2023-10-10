@@ -103,10 +103,25 @@ type MovieInfo = {
   vote_count: number;
 };
 
+type MoviesProps = {
+  movies: {
+    page: number;
+    results: MovieInfo[];
+    total_pages: number;
+    total_results: number;
+  };
+};
+
 type MovieQueryProps = {
   data: MovieInfo;
   isFetching: boolean;
   error: boolean;
+};
+
+type QueryProps = {
+  genreIdOrCategoryName: string | number;
+  page: number;
+  searchQuery: string;
 };
 
 type ActorsProps = {
@@ -119,4 +134,54 @@ type Crew = MovieInfo["credits"]["crew"];
 type PersonListProps = {
   person: Cast | Crew;
   title: string;
+};
+
+type CreditsCollapsibleProps = {
+  image: string[];
+  id: number[];
+  array: string[];
+  title: string;
+};
+
+type GenreProps = {
+  id: number;
+  name: string;
+};
+
+type CreditsProps = {
+  array: string[];
+  id: number[];
+  image: string[];
+};
+
+type TMovie = {
+  movie: {
+    // adult: boolean;
+    // backdrop_path: string;
+    // genre_ids: number[];
+    id: number;
+    // original_language: string;
+    // original_title: string;
+    // overview: string;
+    // popularity: number;
+    poster_path: string;
+    // release_date: string;
+    title: string;
+    // video: boolean;
+    vote_average: number;
+    // vote_count: number;
+  };
+};
+
+type RatingProps = {
+  rating: number;
+  maxRating: number;
+};
+
+type Data = {
+  data: {
+    success: boolean;
+    expires_at: string;
+    request_token: string;
+  };
 };

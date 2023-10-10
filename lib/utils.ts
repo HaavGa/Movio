@@ -2,12 +2,6 @@ import axios from "axios";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-type Data = {
-  success: boolean;
-  expires_at: string;
-  request_token: string;
-};
-
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
@@ -21,7 +15,9 @@ export const moviesApi = axios.create({
 
 export const fetchToken = async () => {
   try {
-    const { data } = await moviesApi.get("authentication/token/new");
+    const { data }: Data = await moviesApi.get(
+      "authentication/token/new"
+    );
     const { request_token: token } = data;
     if (data.success) {
       localStorage.setItem("request_token", token);

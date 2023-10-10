@@ -5,12 +5,6 @@ import {
 
 const tmdbApiKey = process.env.NEXT_PUBLIC_TMDB_KEY;
 
-type QueryProps = {
-  genreIdOrCategoryName: string | number;
-  page: number;
-  searchQuery: string;
-};
-
 export const tmdbApi = createApi({
   reducerPath: "tmdbApi",
   baseQuery: fetchBaseQuery({

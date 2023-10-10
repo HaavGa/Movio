@@ -1,7 +1,3 @@
-type RatingProps = {
-  rating: number;
-  maxRating: number;
-};
 
 const Rating = ({ rating, maxRating }: RatingProps) => {
   const filledStars = Math.floor(rating);

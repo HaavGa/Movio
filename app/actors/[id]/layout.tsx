@@ -1,9 +1,5 @@
 const tmdbApiKey = process.env.NEXT_PUBLIC_TMDB_KEY;
 
-type GenerateMetadataProps = {
-  params: { id: number };
-};
-
 export const generateMetadata = async ({
   params: { id },
 }: GenerateMetadataProps) => {

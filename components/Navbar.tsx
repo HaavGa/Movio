@@ -39,10 +39,6 @@ import Search from "./Search/Search";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 
-type GenreProps = {
-  id: number;
-  name: string;
-};
 
 const categories = [
   { label: "Popular", value: "popular" },
