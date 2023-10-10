@@ -4,14 +4,19 @@ import Actors from "@/components/Actors";
 import CreditsCollapsible from "@/components/Collapsible";
 import Credits from "@/components/Credits";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import MovieList from "@/components/Movies/MovieList";
 import Rating from "@/components/Movies/Rating";
 import { selectGenreOrCategory } from "@/features/currentGenreOrCategory";
 import genreIcons from "@/public/genres";
-import { useGetMovieQuery } from "@/services/TMDB";
+import {
+  useGetMovieQuery,
+  useGetRecommendationsQuery,
+} from "@/services/TMDB";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
+import { BsChevronDown } from "react-icons/bs";
 import { IoMdArrowForward } from "react-icons/io";
 import { useDispatch } from "react-redux";
 
@@ -22,7 +27,14 @@ const MovieInformation = () => {
   // @ts-ignore
   const { data, isFetching, error }: MovieQueryProps =
     useGetMovieQuery(id as unknown as number);
-  console.log(data);
+
+  // @ts-ignore
+  const {
+    data: recommendData,
+    error: recommendError,
+  }: RecommendMovieQueryProps = useGetRecommendationsQuery(
+    id as unknown as number
+  );
 
   if (isFetching) {
     return (
@@ -47,6 +59,7 @@ const MovieInformation = () => {
   const directorId = crew
     .filter(person => person.job === "Director")
     .map(dir => dir.id);
+
   return (
     <>
       <div className="mx-2 flex flex-col items-center space-x-10 space-y-5 md:flex-row md:items-start md:justify-center lg:mx-5 lg:justify-around">
@@ -90,7 +103,7 @@ const MovieInformation = () => {
             <div className="grid grid-cols-2 gap-5 pt-3 lg:grid-cols-3 xl:grid-cols-5">
               {data.genres.map((genre, i) => (
                 <Link
-                  href={"/"}
+                  href={`/?category=${genre.name}`}
                   onClick={() =>
                     dispatch(selectGenreOrCategory(genre.id))
                   }
@@ -116,7 +129,7 @@ const MovieInformation = () => {
             <div className="flex justify-center space-x-9 pt-3 lg:space-x-14">
               {data.genres.map((genre, i) => (
                 <Link
-                  href={"/"}
+                  href={`/?category=${genre.name}`}
                   onClick={() =>
                     dispatch(selectGenreOrCategory(genre.id))
                   }
@@ -140,8 +153,8 @@ const MovieInformation = () => {
             </div>
           )}
           <div className="hidden flex-col pt-5 lg:flex">
-            <h2 className="text-start text-xl">Overview</h2>
-            <p className="my-3 max-w-2xl text-start">
+            <h2 className="text-start text-2xl">Overview</h2>
+            <div className="my-3 max-w-2xl text-start">
               {data.overview.length < 200 ? (
                 data.overview
               ) : (
@@ -162,7 +175,7 @@ const MovieInformation = () => {
                   </>
                 </p>
               )}
-            </p>
+            </div>
             <div>
               <div className="mb-3 space-y-3">
                 <h2 className="text-start text-xl">Directed by</h2>
@@ -207,7 +220,7 @@ const MovieInformation = () => {
         </div>
       </div>
       <div className="flex flex-col items-start pt-5 lg:hidden">
-        <h2 className="text-xl">Overview</h2>
+        <h2 className="text-2xl">Overview</h2>
         <p className="my-3 max-w-2xl text-start">
           {data.overview.length < 200 ? (
             data.overview
@@ -247,6 +260,24 @@ const MovieInformation = () => {
         <div className="flex space-x-6 overflow-x-scroll md:max-w-full lg:hidden">
           <Actors data={data} />
         </div>
+        {recommendError && (
+          <div className="grid h-32 place-content-center text-xl">
+            Error fetching recommended movies!
+          </div>
+        )}
+        {recommendData && recommendData.results.length > 0 && (
+          <>
+            <div className="my-2 flex flex-col items-center">
+              <p className="animate-bounce">
+                <BsChevronDown size={30} />
+              </p>
+              <h2 className="mb-5 mt-2 text-3xl">
+                Recommended movies
+              </h2>
+            </div>
+            <MovieList movies={recommendData} />
+          </>
+        )}
       </div>
     </>
   );

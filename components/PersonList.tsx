@@ -11,7 +11,7 @@ const PersonList = ({ person, title }: PersonListProps) => {
           className="my-3 grid grid-cols-2 items-center gap-x-5 text-lg xl:text-xl"
         >
           <Link
-            href={`/actors/${person.id}`}
+            href={`/name/${person.id}`}
             className="flex items-center gap-x-3 rounded-lg p-3 hover:bg-muted"
           >
             <Image

@@ -2,32 +2,36 @@ import Navbar from "@/components/Navbar";
 import ThemeProvider from "@/components/ThemeProvider";
 import { Providers } from "@/providers/Providers";
 import { Roboto } from "next/font/google";
-import { headers } from "next/headers";
+
+import { Metadata } from "next";
 
 import "./globals.css";
 
 const roboto = Roboto({ weight: "400", subsets: ["latin"] });
 
-export const generateMetadata = () => {
-  const headersList = headers();
-  // read the custom x-url header
-  const header_url = headersList.get("x-url") || "";
-  const equalIndex = header_url.indexOf("=");
+// export const generateMetadata = () => {
+// const headersList = headers();
+// console.log(headersList);
+// // read the custom x-url header
+// const header_url = headersList.get("x-url") || "";
+// const equalIndex = header_url.indexOf("=");
 
-  // Get the substring starting from the index after "="
-  const category = header_url
-    .substring(equalIndex + 1)
-    .replace("+", " ");
+// // Get the substring starting from the index after "="
+// const category = header_url
+//   .substring(equalIndex + 1)
+//   .replace("+", " ");
 
-  return {
-    title: `Movio | ${category}`,
-  };
-};
+// console.log(category);
 
-// export const metadata: Metadata = {
-//   title: "Movio",
-//   description: "Search and bookmark your favorite movies",
+// return {
+//   title: `Movio | ${category}`,
 // };
+// };
+
+export const metadata: Metadata = {
+  title: "Movio",
+  description: "Search and bookmark your favorite movies",
+};
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
@@ -41,7 +45,10 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
             <Navbar />
             <div className="grow p-10">
               {/* <Toolbar /> */}
-              <div className="sm:ml-64">{children}</div>
+              <div className="sm:ml-64">
+                {/* <div>{category}</div> */}
+                {children}
+              </div>
             </div>
           </ThemeProvider>
         </Providers>
