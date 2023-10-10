@@ -1,5 +1,7 @@
 type GenerateMetadataProps = {
-  params: { id: number };
+  params: {
+    id: number;
+  };
 };
 
 type GenreArray = {
@@ -7,7 +9,7 @@ type GenreArray = {
   name: string;
 }[];
 
-type Actor = {
+type Name = {
   adult: boolean;
   also_known_as: string;
   biography: string;
@@ -24,8 +26,8 @@ type Actor = {
   profile_path: string;
 };
 
-type ActorQueryProps = {
-  data: Actor;
+type NameQueryProps = {
+  data: Name;
   isFetching: boolean;
   error: boolean;
 };
@@ -114,6 +116,12 @@ type MoviesProps = {
 
 type MovieQueryProps = {
   data: MovieInfo;
+  isFetching: boolean;
+  error: boolean;
+};
+
+type RecommendMovieQueryProps = {
+  data: MoviesProps["movies"];
   isFetching: boolean;
   error: boolean;
 };

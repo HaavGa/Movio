@@ -39,7 +39,6 @@ import Search from "./Search/Search";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 
-
 const categories = [
   { label: "Popular", value: "popular" },
   { label: "Top Rated", value: "top_rated" },
@@ -89,7 +88,12 @@ const Navbar = () => {
     <div>
       <div className="fixed hidden h-full w-64 overflow-y-scroll border-r-2 bg-background sm:block">
         <div className="py-4">
-          <Link href="/">
+          <Link
+            href="/?category=Popular"
+            onClick={() => {
+              dispatch(selectGenreOrCategory("popular"));
+            }}
+          >
             <Image
               src={theme === "light" ? MovioBlue : MovioRed}
               width={180}
@@ -106,9 +110,9 @@ const Navbar = () => {
                 <Link href={`/?category=${label}`} key={value}>
                   <li
                     className="flex cursor-pointer items-center gap-5 px-6 py-2 hover:bg-muted"
-                    onClick={() => {
-                      dispatch(selectGenreOrCategory(value));
-                    }}
+                    onClick={() =>
+                      dispatch(selectGenreOrCategory(value))
+                    }
                   >
                     <Image
                       src={
@@ -136,9 +140,9 @@ const Navbar = () => {
                   <Link href={`/?category=${name}`} key={id}>
                     <li
                       className="flex cursor-pointer items-center gap-5 px-6 py-2 hover:bg-muted"
-                      onClick={() => {
-                        dispatch(selectGenreOrCategory(id));
-                      }}
+                      onClick={() =>
+                        dispatch(selectGenreOrCategory(id))
+                      }
                     >
                       <Image
                         src={
@@ -177,7 +181,12 @@ const Navbar = () => {
               <SheetContent className="w-64 overflow-y-scroll p-0">
                 <div className="py-4">
                   <SheetClose asChild>
-                    <Link href="/">
+                    <Link
+                      href="/?category=Popular"
+                      onClick={() => {
+                        dispatch(selectGenreOrCategory("popular"));
+                      }}
+                    >
                       <Image
                         src={theme === "light" ? MovioBlue : MovioRed}
                         width={180}
@@ -194,7 +203,14 @@ const Navbar = () => {
                       {categories.map(({ label, value }) => (
                         <div key={value}>
                           <SheetClose asChild>
-                            <Link href={"/"} onClick={() => {}}>
+                            <Link
+                              href={`/?category=${label}`}
+                              onClick={() => {
+                                dispatch(
+                                  selectGenreOrCategory(value)
+                                );
+                              }}
+                            >
                               <li className="flex cursor-pointer items-center gap-5 px-6 py-2 hover:bg-muted">
                                 <Image
                                   src={
@@ -225,8 +241,12 @@ const Navbar = () => {
                             <li key={id}>
                               <SheetClose asChild>
                                 <Link
-                                  href={"/"}
-                                  onClick={() => {}}
+                                  href={`/?category=${name}`}
+                                  onClick={() => {
+                                    dispatch(
+                                      selectGenreOrCategory(id)
+                                    );
+                                  }}
                                   className="flex cursor-pointer items-center gap-5 px-6 py-2 hover:bg-muted"
                                 >
                                   <Image

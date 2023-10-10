@@ -8,7 +8,7 @@ export const generateMetadata = async ({
     const response = await fetch(`
     https://api.themoviedb.org/3/person/${id}?api_key=${tmdbApiKey}
     `);
-    const data: Actor = await response.json();
+    const data: Name = await response.json();
     return data;
   };
   const data = await fetchData();
@@ -18,8 +18,8 @@ export const generateMetadata = async ({
   };
 };
 
-const MovieLayout = ({ children }: { children: React.ReactNode }) => {
+const NameLayout = ({ children }: { children: React.ReactNode }) => {
   return <div>{children}</div>;
 };
 
-export default MovieLayout;
+export default NameLayout;

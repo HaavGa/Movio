@@ -46,7 +46,7 @@ const CreditsCollapsible = ({
         {array.map((person, i) => (
           <div key={i}>
             <Link
-              href={`/actors/${id[i]}`}
+              href={`/name/${id[i]}`}
               className="flex items-center gap-x-3 rounded-lg p-3 hover:bg-muted lg:-translate-x-3"
             >
               <Image

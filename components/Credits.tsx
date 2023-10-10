@@ -1,11 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 
-
 const Credits = ({ array, id, image }: CreditsProps) => {
   return (
     <Link
-      href={`/actors/${id[0]}`}
+      href={`/name/${id[0]}`}
       className="flex items-center gap-x-3 rounded-lg p-3 hover:bg-muted lg:-translate-x-3"
     >
       <Image

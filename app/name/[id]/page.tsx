@@ -1,18 +1,19 @@
 "use client";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import { useGetActorQuery } from "@/services/TMDB";
+import { useGetNameQuery } from "@/services/TMDB";
 import { differenceInYears, format } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
-const Actors = () => {
+const Name = () => {
   const [showText, setShowText] = useState(false);
   const { id } = useParams();
   // @ts-ignore
-  const { data, isFetching, error }: ActorQueryProps =
-    useGetActorQuery(id as unknown as number);
+  const { data, isFetching, error }: NameQueryProps = useGetNameQuery(
+    id as unknown as number
+  );
 
   if (isFetching) {
     return (
@@ -191,4 +192,4 @@ const Actors = () => {
     </>
   );
 };
-export default Actors;
+export default Name;

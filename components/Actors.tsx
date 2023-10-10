@@ -7,7 +7,7 @@ const Actors = ({ data }: ActorsProps) => {
     <>
       {data &&
         cast.slice(0, 10).map(actor => (
-          <Link href={`/actors/${actor.id}`} key={actor.name}>
+          <Link href={`/name/${actor.id}`} key={actor.name}>
             <div className="flex h-full w-32 flex-col items-center p-3 hover:bg-muted">
               <Image
                 src={
