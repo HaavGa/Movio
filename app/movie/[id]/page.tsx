@@ -176,46 +176,48 @@ const MovieInformation = () => {
                 </p>
               )}
             </div>
-            <div>
-              <div className="mb-3 space-y-3">
-                <h2 className="text-start text-xl">Directed by</h2>
-                {directorArray.length > 1 ? (
-                  <div>
-                    <CreditsCollapsible
-                      array={directorArray}
-                      id={directorId}
-                      image={directorImage}
-                      title="directors"
-                    />
-                  </div>
-                ) : (
-                  <div className="max-w-fit">
-                    <Credits
-                      array={directorArray}
-                      id={directorId}
-                      image={directorImage}
-                    />
-                  </div>
-                )}
+            {data.credits.cast.length > 0 && (
+              <div>
+                <div className="mb-3 space-y-3">
+                  <h2 className="text-start text-xl">Directed by</h2>
+                  {directorArray.length > 1 ? (
+                    <div>
+                      <CreditsCollapsible
+                        array={directorArray}
+                        id={directorId}
+                        image={directorImage}
+                        title="directors"
+                      />
+                    </div>
+                  ) : (
+                    <div className="max-w-fit">
+                      <Credits
+                        array={directorArray}
+                        id={directorId}
+                        image={directorImage}
+                      />
+                    </div>
+                  )}
+                </div>
+                <div className="flex w-full justify-between gap-14">
+                  <h2 className="text-start text-xl">Top Cast</h2>
+                  {data.credits.cast.length > 6 && (
+                    <Link
+                      href={`/movie/${id}/fullcredits`}
+                      className="group flex cursor-pointer items-center text-xl"
+                    >
+                      See full Cast & Crew
+                      <span className="transition group-hover:translate-x-2">
+                        <IoMdArrowForward size={25} />
+                      </span>
+                    </Link>
+                  )}
+                </div>
+                <div className="flex h-full space-x-6 overflow-x-scroll md:max-w-[36rem] xl:max-w-[42rem]">
+                  <Actors data={data} />
+                </div>
               </div>
-              <div className="flex w-full justify-between gap-14">
-                <h2 className="text-start text-xl">Top Cast</h2>
-                {data.credits.cast.length > 6 && (
-                  <Link
-                    href={`/movie/${id}/fullcredits`}
-                    className="group flex cursor-pointer items-center text-xl"
-                  >
-                    See full Cast & Crew
-                    <span className="transition group-hover:translate-x-2">
-                      <IoMdArrowForward size={25} />
-                    </span>
-                  </Link>
-                )}
-              </div>
-              <div className="flex h-full space-x-6 overflow-x-scroll md:max-w-[36rem] xl:max-w-[42rem]">
-                <Actors data={data} />
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
