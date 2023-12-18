@@ -19,10 +19,11 @@ import {
   useGetMovieQuery,
   useGetRecommendationsQuery,
 } from "@/services/TMDB";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
 import {
   FaBookmark,
@@ -34,12 +35,22 @@ import { IoMdArrowForward } from "react-icons/io";
 import { useDispatch } from "react-redux";
 
 const MovieInformation = () => {
+  const [user, setUser] = useState<TUser["user"]>();
   const router = useRouter();
   const [showText, setShowText] = useState(false);
   const dispatch = useDispatch();
   const { id } = useParams();
   const addedToFavorites = false;
   const addedToWatchlist = false;
+
+  useEffect(() => {
+    const getUser = async () => {
+      const supabase = createClientComponentClient();
+      const { data } = await supabase.auth.getSession();
+      setUser(data?.session?.user as TUser["user"]);
+    };
+    getUser();
+  }, []);
 
   // @ts-ignore
   const { data, isFetching, error }: TMovieQueryProps =
@@ -120,48 +131,52 @@ const MovieInformation = () => {
             height={500}
             className="mb-8 h-[22rem] w-[15rem] rounded-3xl object-cover xl:h-[33rem] xl:w-[23rem]"
           />
-          <button
-            type="submit"
-            className="absolute bottom-16 right-8"
-            // @ts-ignore
-            onClick={handleAddToFavorites}
-          >
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  {addedToFavorites ? (
-                    <FaHeart className="cursor-pointer text-5xl text-primary transition hover:scale-110" />
-                  ) : (
-                    <FaRegHeart className="cursor-pointer text-5xl text-primary transition hover:scale-110" />
-                  )}
-                </TooltipTrigger>
-                <TooltipContent className="h-fit w-fit text-lg">
-                  <p>Add to Favorites</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </button>
-          <button
-            type="submit"
-            className="absolute left-6 top-0"
-            // @ts-ignore
-            onClick={handleAddToWatchList}
-          >
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  {addedToWatchlist ? (
-                    <FaBookmark className="cursor-pointer text-6xl text-primary transition hover:scale-110" />
-                  ) : (
-                    <FaRegBookmark className="cursor-pointer text-6xl text-primary transition hover:scale-110" />
-                  )}
-                </TooltipTrigger>
-                <TooltipContent className="h-fit w-fit text-lg">
-                  <p>Add to Watchlist</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </button>
+          {user && (
+            <>
+              <button
+                type="submit"
+                className="absolute bottom-16 right-8"
+                // @ts-ignore
+                onClick={handleAddToFavorites}
+              >
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      {addedToFavorites ? (
+                        <FaHeart className="cursor-pointer text-5xl text-primary transition hover:scale-110" />
+                      ) : (
+                        <FaRegHeart className="cursor-pointer text-5xl text-primary transition hover:scale-110" />
+                      )}
+                    </TooltipTrigger>
+                    <TooltipContent className="h-fit w-fit text-lg">
+                      <p>Add to Favorites</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </button>
+              <button
+                type="submit"
+                className="absolute left-6 top-0"
+                // @ts-ignore
+                onClick={handleAddToWatchList}
+              >
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      {addedToWatchlist ? (
+                        <FaBookmark className="cursor-pointer text-6xl text-primary transition hover:scale-110" />
+                      ) : (
+                        <FaRegBookmark className="cursor-pointer text-6xl text-primary transition hover:scale-110" />
+                      )}
+                    </TooltipTrigger>
+                    <TooltipContent className="h-fit w-fit text-lg">
+                      <p>Add to Watchlist</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </button>
+            </>
+          )}
         </div>
         <div className="flex flex-col justify-center space-y-3 text-center">
           {data.title.length > 25 ? (
