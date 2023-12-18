@@ -10,23 +10,17 @@ import { FaBookmark, FaHeart } from "react-icons/fa";
 import { MdExitToApp } from "react-icons/md";
 
 const Profile = () => {
-  const [user, setUser] = useState<TUser>({});
+  const [user, setUser] = useState<TUser["user"]>();
   const router = useRouter();
 
   useEffect(() => {
     const getUser = async () => {
       const supabase = createClientComponentClient();
-      const { data } = await supabase.auth.getUser();
-      setUser(data.user as TUser);
+      const { data } = await supabase.auth.getSession();
+      setUser(data?.session?.user as TUser["user"]);
     };
     getUser();
   }, []);
-
-  // const {
-  //   data: { user },
-  // } = await supabase.auth.getUser();
-
-  // const { user } = useSelector((state: RootState) => state.auth);
 
   const handleLogout = async () => {
     const supabase = createClientComponentClient();
@@ -47,7 +41,9 @@ const Profile = () => {
     <>
       <div className="mb-3 flex justify-between">
         <div>
-          <h1 className="mb-3 text-xl lg:text-3xl">My profile</h1>
+          <h1 className="mb-3 text-xl lg:text-3xl">
+            Welcome {user && user.email}
+          </h1>
         </div>
         <Button
           variant={"outline"}

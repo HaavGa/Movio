@@ -272,7 +272,7 @@ const Navbar = ({ user }: TUser) => {
                     className=" text-base uppercase text-white"
                   >
                     <span className="mr-2 hidden text-sm sm:block">
-                      My movies
+                      My profile
                     </span>
                     <Avatar className="h-8 w-8">
                       <AvatarImage
