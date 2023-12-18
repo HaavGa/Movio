@@ -51,14 +51,13 @@ export const handleAddToCollection = async (
     title,
     vote_average,
   };
-  console.log(`/api/${collection}`);
   const res = await fetch(`/api/${collection}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(document),
   });
   const json = await res.json();
-  console.log(json);
+
   if (json.error) {
     return toast({
       variant: "destructive",

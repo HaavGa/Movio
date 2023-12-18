@@ -12,24 +12,7 @@ import "./globals.css";
 
 const roboto = Roboto({ weight: "400", subsets: ["latin"] });
 
-// export const generateMetadata = () => {
-// const headersList = headers();
-// console.log(headersList);
-// // read the custom x-url header
-// const header_url = headersList.get("x-url") || "";
-// const equalIndex = header_url.indexOf("=");
-
-// // Get the substring starting from the index after "="
-// const category = header_url
-//   .substring(equalIndex + 1)
-//   .replace("+", " ");
-
-// console.log(category);
-
-// return {
-//   title: `Movio | ${category}`,
-// };
-// };
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Movio",

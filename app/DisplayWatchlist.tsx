@@ -18,7 +18,6 @@ const DisplayWatchlist = () => {
       // Set the fetched data to the state
       if (data) {
         setCollection(data);
-        console.log(data);
       }
 
       // Handle errors
@@ -28,8 +27,6 @@ const DisplayWatchlist = () => {
     };
     getWatchlist();
   }, []);
-
-  console.log(collection);
 
   return (
     <>
