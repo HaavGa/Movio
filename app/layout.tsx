@@ -9,6 +9,7 @@ import { Metadata } from "next";
 
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import "./globals.css";
+import { redirect } from "next/navigation";
 
 const roboto = Roboto({ weight: "400", subsets: ["latin"] });
 
@@ -34,7 +35,9 @@ const RootLayout = async ({
             defaultTheme="system"
             enableSystem
           >
-            <Navbar user={data?.session?.user as TUser["user"]} />
+            <Navbar
+              user={data?.session?.user as unknown as TUser["user"]}
+            />
             <div className="grow p-10">
               {/* <Toolbar /> */}
               <div className="sm:ml-64">
