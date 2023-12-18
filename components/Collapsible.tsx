@@ -15,7 +15,7 @@ const CreditsCollapsible = ({
   id,
   array,
   title,
-}: CreditsCollapsibleProps) => {
+}: TCreditsCollapsibleProps) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <Collapsible

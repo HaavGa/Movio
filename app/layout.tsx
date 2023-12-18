@@ -1,10 +1,13 @@
 import Navbar from "@/components/Navbar";
 import ThemeProvider from "@/components/ThemeProvider";
+import { Toaster } from "@/components/ui/toaster";
 import { Providers } from "@/providers/Providers";
 import { Roboto } from "next/font/google";
+import { cookies } from "next/headers";
 
 import { Metadata } from "next";
 
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import "./globals.css";
 
 const roboto = Roboto({ weight: "400", subsets: ["latin"] });
@@ -32,7 +35,13 @@ export const metadata: Metadata = {
   title: "Movio",
   description: "Search and bookmark your favorite movies",
 };
-const RootLayout = ({ children }: { children: React.ReactNode }) => {
+const RootLayout = async ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const supabase = createServerComponentClient({ cookies });
+  const { data } = await supabase.auth.getSession();
   return (
     <html lang="en">
       <body className={roboto.className}>
@@ -42,7 +51,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
             defaultTheme="system"
             enableSystem
           >
-            <Navbar />
+            <Navbar user={data.session?.user} />
             <div className="grow p-10">
               {/* <Toolbar /> */}
               <div className="sm:ml-64">
@@ -50,6 +59,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
                 {children}
               </div>
             </div>
+            <Toaster />
           </ThemeProvider>
         </Providers>
       </body>

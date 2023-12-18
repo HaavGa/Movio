@@ -2,13 +2,13 @@ const tmdbApiKey = process.env.NEXT_PUBLIC_TMDB_KEY;
 
 export const generateMetadata = async ({
   params: { id },
-}: GenerateMetadataProps) => {
+}: TGenerateMetadataProps) => {
   // fetch data
   const fetchData = async () => {
     const response = await fetch(`
     https://api.themoviedb.org/3/movie/${id}?api_key=${tmdbApiKey}
     `);
-    const data: MovieInfo = await response.json();
+    const data: TMovieInfo = await response.json();
     return data;
   };
   const data = await fetchData();

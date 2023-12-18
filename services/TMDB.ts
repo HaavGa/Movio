@@ -21,7 +21,7 @@ export const tmdbApi = createApi({
         genreIdOrCategoryName,
         page,
         searchQuery,
-      }: QueryProps) => {
+      }: TQueryProps) => {
         // * Get movies by Search
         if (searchQuery) {
           return `search/movie?query=${searchQuery}&page=${page}&api_key=${tmdbApiKey}`;
@@ -59,6 +59,12 @@ export const tmdbApi = createApi({
       query: (id: number) =>
         `movie/${id}/recommendations?api_key=${tmdbApiKey}`,
     }),
+    // * Get movies by actor
+    getMoviesByActorId: builder.query({
+      //@ts-ignore
+      query: (id: number, page: number) =>
+        `discover/movie?with_cast=${id}&page=${page}&api_key=${tmdbApiKey}`,
+    }),
   }),
 });
 
@@ -68,4 +74,5 @@ export const {
   useGetMovieQuery,
   useGetNameQuery,
   useGetRecommendationsQuery,
+  useGetMoviesByActorIdQuery,
 } = tmdbApi;

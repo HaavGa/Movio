@@ -1,5 +1,4 @@
-
-const Rating = ({ rating, maxRating }: RatingProps) => {
+const Rating = ({ rating, maxRating }: TRatingProps) => {
   const filledStars = Math.floor(rating);
   const hasHalfStar = rating % 1 !== 0;
 

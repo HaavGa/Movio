@@ -2,6 +2,7 @@
 
 import MovieCardLoading from "@/components/Movies/MovieCardLoading";
 import MovieList from "@/components/Movies/MovieList";
+import Pagination from "@/components/pagination/Pagination";
 import { RootState } from "@/redux/store";
 import { useGetMoviesQuery } from "@/services/TMDB";
 import { useState } from "react";
@@ -25,16 +26,29 @@ const Movies = () => {
   }
 
   if (!data.results.length || data.results.length === 0) {
-    return <p>No movies found!</p>;
+    return (
+      <p className="text-center text-4xl">
+        <p>No movies found!</p>
+      </p>
+    );
   }
 
   if (error) {
-    return <p>An error occured</p>;
+    return (
+      <p className="text-center text-4xl">
+        <p>An error occured</p>
+      </p>
+    );
   }
 
   return (
     <div>
       <MovieList movies={data} />
+      <Pagination
+        currentPage={page}
+        totalPages={data.total_pages}
+        setPage={setPage}
+      />
     </div>
   );
 };

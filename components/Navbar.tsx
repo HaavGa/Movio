@@ -12,27 +12,20 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-import { setUser } from "@/features/auth";
 import { selectGenreOrCategory } from "@/features/currentGenreOrCategory";
-import {
-  cn,
-  createSessionId,
-  fetchToken,
-  moviesApi,
-} from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import genreIcons from "@/public/genres";
-import MovioBlue from "@/public/logos/movio-blue.png";
 import MovioRed from "@/public/logos/movio-red.png";
-import { RootState } from "@/redux/store";
 import { useGetGenresQuery } from "@/services/TMDB";
 
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { MdAccountCircle, MdMenu } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import ModeToggle from "./ModeToggle";
 import GenreLoading from "./Movies/GenreLoading";
 import Search from "./Search/Search";
@@ -45,44 +38,22 @@ const categories = [
   { label: "Upcoming", value: "upcoming" },
 ];
 
-const Navbar = () => {
-  // const { genreIdOrCategoryName } = useSelector(
-  //   state => state.currentGenreOrCategory
-  // );
-  const { isAuthenticated, user } = useSelector(
-    (state: RootState) => state.auth
-  );
+const Navbar = ({ user }: TUser) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const getUser = async () => {
+      const supabase = createClientComponentClient();
+      const { data } = await supabase.auth.getUser();
+      setIsAuthenticated(data.user ? true : false);
+    };
+    getUser();
+  }, []);
+
   const { theme } = useTheme();
   const pathName = usePathname();
   const { data, isFetching } = useGetGenresQuery();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const token = localStorage.getItem("request_token");
-    const sessionIdFromLocalStorage =
-      localStorage.getItem("session_id");
-    const logInUser = async () => {
-      try {
-        if (token) {
-          if (sessionIdFromLocalStorage) {
-            const { data: userData } = await moviesApi.get(
-              `/account?session_id=${sessionIdFromLocalStorage}`
-            );
-            dispatch(setUser(userData));
-          } else {
-            const sessionId = await createSessionId();
-            const { data: userData } = await moviesApi.get(
-              `/account?session_id=${sessionId}`
-            );
-            dispatch(setUser(userData));
-          }
-        }
-      } catch (error) {
-        console.log((error as Error).message);
-      }
-    };
-    logInUser();
-  }, [dispatch]);
 
   return (
     <div>
@@ -95,7 +66,7 @@ const Navbar = () => {
             }}
           >
             <Image
-              src={theme === "light" ? MovioBlue : MovioRed}
+              src={MovioRed}
               width={180}
               height={25}
               alt="logo"
@@ -136,7 +107,7 @@ const Navbar = () => {
               {isFetching ? (
                 <GenreLoading />
               ) : (
-                data.genres.map(({ name, id }: GenreProps) => (
+                data.genres.map(({ name, id }: TGenreProps) => (
                   <Link href={`/?category=${name}`} key={id}>
                     <li
                       className="flex cursor-pointer items-center gap-5 px-6 py-2 hover:bg-muted"
@@ -164,7 +135,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col bg-main-blue p-5 shadow-md dark:bg-main-red sm:pl-72">
+      <div className="flex flex-col bg-main-red p-5 shadow-md sm:pl-72">
         <div
           className={cn(
             "mt-2 flex h-fit items-start justify-between text-black sm:mt-0 sm:h-full sm:items-center",
@@ -174,7 +145,7 @@ const Navbar = () => {
           <div className="flex items-center sm:hidden">
             <Sheet>
               <SheetTrigger>
-                <div className="rounded-full p-2 transition hover:bg-blue-600 dark:hover:bg-red-600">
+                <div className="rounded-full p-2 transition hover:bg-red-600">
                   <MdMenu className="text-xl text-white" />
                 </div>
               </SheetTrigger>
@@ -188,7 +159,7 @@ const Navbar = () => {
                       }}
                     >
                       <Image
-                        src={theme === "light" ? MovioBlue : MovioRed}
+                        src={MovioRed}
                         width={180}
                         height={25}
                         alt="logo"
@@ -237,7 +208,7 @@ const Navbar = () => {
                         <GenreLoading />
                       ) : (
                         data.genres.map(
-                          ({ name, id }: GenreProps) => (
+                          ({ name, id }: TGenreProps) => (
                             <li key={id}>
                               <SheetClose asChild>
                                 <Link
@@ -273,7 +244,7 @@ const Navbar = () => {
               </SheetContent>
             </Sheet>
           </div>
-          <div className="rounded-full transition hover:bg-blue-600 dark:hover:bg-red-600">
+          <div className="rounded-full transition  hover:bg-red-600">
             <ModeToggle />
           </div>
           {pathName === "/" && (
@@ -284,17 +255,18 @@ const Navbar = () => {
           <div>
             {!isAuthenticated ? (
               <>
-                <Button
-                  variant="ghost"
-                  className=" text-base uppercase text-white"
-                  onClick={fetchToken}
-                >
-                  Login &nbsp; <MdAccountCircle size={20} />
-                </Button>
+                <Link href="/login">
+                  <Button
+                    variant="ghost"
+                    className=" text-base uppercase text-white"
+                  >
+                    Profile &nbsp; <MdAccountCircle size={20} />
+                  </Button>
+                </Link>
               </>
             ) : (
               <>
-                <Link href={`/profile/${user.id}`}>
+                <Link href={`/profile/${user?.id}`}>
                   <Button
                     variant="ghost"
                     className=" text-base uppercase text-white"
@@ -304,10 +276,13 @@ const Navbar = () => {
                     </span>
                     <Avatar className="h-8 w-8">
                       <AvatarImage
+                        // src={
+                        //   user.avatar.tmdb.avatar_path
+                        //     ? `https://image.tmdb.org/t/p/w200${user.avatar.tmdb.avatar_path}`
+                        //     : `https://secure.gravatar.com/avatar/${user.avatar.gravatar.hash}?s=200`
+                        // }
                         src={
-                          user.avatar.tmdb.avatar_path
-                            ? `https://image.tmdb.org/t/p/w200${user.avatar.tmdb.avatar_path}`
-                            : `https://secure.gravatar.com/avatar/${user.avatar.gravatar.hash}?s=200`
+                          "https://secure.gravatar.com/avatar/1?s=200"
                         }
                       />
                       <AvatarFallback>CN</AvatarFallback>

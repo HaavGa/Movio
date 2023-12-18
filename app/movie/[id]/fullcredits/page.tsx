@@ -12,7 +12,7 @@ import Credits from "@/components/Credits";
 const FullCredits = () => {
   const { id } = useParams();
   // @ts-ignore
-  const { data, isFetching, error }: MovieQueryProps =
+  const { data, isFetching, error }: TMovieQueryProps =
     useGetMovieQuery(id as unknown as number);
 
   if (isFetching) {

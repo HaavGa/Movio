@@ -1,6 +1,10 @@
 "use client";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import { useGetNameQuery } from "@/services/TMDB";
+import MovieList from "@/components/Movies/MovieList";
+import {
+  useGetMoviesByActorIdQuery,
+  useGetNameQuery,
+} from "@/services/TMDB";
 import { differenceInYears, format } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,9 +14,16 @@ import { useState } from "react";
 const Name = () => {
   const [showText, setShowText] = useState(false);
   const { id } = useParams();
+  const page = 1;
   // @ts-ignore
-  const { data, isFetching, error }: NameQueryProps = useGetNameQuery(
-    id as unknown as number
+  const { data, isFetching, error }: TNameQueryProps =
+    useGetNameQuery(id as unknown as number);
+
+  // @ts-ignore
+  const { data: movies } = useGetMoviesByActorIdQuery(
+    id as unknown as number,
+    // @ts-ignore
+    page
   );
 
   if (isFetching) {
@@ -44,17 +55,15 @@ const Name = () => {
   const getCountry = (str: string | null) => {
     if (str === null) return;
     const splitString = str.split(",");
-    // Get the country part of the string
     const countryString = splitString[splitString.length - 1].trim();
     return countryString.toLowerCase();
   };
 
+  // For å vise wikipediasiden til personen, må vi fjerne landet fra stringen
   const removeCountry = (str: string) => {
     if (!str.includes(",") || !str.includes(" ")) return str;
     const splitString = str.split(",");
-    // Remove the last part (country)
     splitString.pop();
-    // Join the remaining parts with a comma
     const result = splitString.join(",").trim();
     return result;
   };
@@ -116,6 +125,7 @@ const Name = () => {
                 />
               </div>
             )}
+
             {birthday && (
               <p>
                 Born: {formattedBirthDay}
@@ -185,10 +195,18 @@ const Name = () => {
           </div>
         </div>
       )}
-      <div className="w-full">
-        <h2>Movies by actor</h2>
-        <div className="h-4 w-full bg-red-300"></div>
-      </div>
+      {movies && (
+        <div className="w-full">
+          <h2 className="mb-8 mt-3 text-center text-3xl">
+            Movies{" "}
+            {data.known_for_department.toLowerCase() === "directing"
+              ? "directed by"
+              : "starring"}{" "}
+            {data.name}
+          </h2>
+          <MovieList movies={movies} />
+        </div>
+      )}
     </>
   );
 };

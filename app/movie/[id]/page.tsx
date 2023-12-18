@@ -6,7 +6,14 @@ import Credits from "@/components/Credits";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import MovieList from "@/components/Movies/MovieList";
 import Rating from "@/components/Movies/Rating";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { selectGenreOrCategory } from "@/features/currentGenreOrCategory";
+import { handleAddToCollection } from "@/lib/utils";
 import genreIcons from "@/public/genres";
 import {
   useGetMovieQuery,
@@ -14,25 +21,35 @@ import {
 } from "@/services/TMDB";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { MouseEvent, useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
+import {
+  FaBookmark,
+  FaHeart,
+  FaRegBookmark,
+  FaRegHeart,
+} from "react-icons/fa";
 import { IoMdArrowForward } from "react-icons/io";
 import { useDispatch } from "react-redux";
 
 const MovieInformation = () => {
+  const router = useRouter();
   const [showText, setShowText] = useState(false);
   const dispatch = useDispatch();
   const { id } = useParams();
+  const addedToFavorites = false;
+  const addedToWatchlist = false;
+
   // @ts-ignore
-  const { data, isFetching, error }: MovieQueryProps =
+  const { data, isFetching, error }: TMovieQueryProps =
     useGetMovieQuery(id as unknown as number);
 
   // @ts-ignore
   const {
     data: recommendData,
     error: recommendError,
-  }: RecommendMovieQueryProps = useGetRecommendationsQuery(
+  }: TRecommendMovieQueryProps = useGetRecommendationsQuery(
     id as unknown as number
   );
 
@@ -60,20 +77,98 @@ const MovieInformation = () => {
     .filter(person => person.job === "Director")
     .map(dir => dir.id);
 
+  const handleAddToFavorites = (
+    e: React.MouseEvent<
+      HTMLButtonElement,
+      MouseEvent<Element, MouseEvent>
+    >
+  ) => {
+    handleAddToCollection(
+      e,
+      "favorites",
+      id.toString(),
+      data.poster_path,
+      data.title,
+      data.vote_average,
+      router
+    );
+  };
+
+  const handleAddToWatchList = (
+    e: React.MouseEvent<
+      HTMLButtonElement,
+      MouseEvent<Element, MouseEvent>
+    >
+  ) => {
+    handleAddToCollection(
+      e,
+      "watchlist",
+      id.toString(),
+      data.poster_path,
+      data.title,
+      data.vote_average,
+      router
+    );
+  };
+
   return (
     <>
       <div className="mx-2 flex flex-col items-center space-x-10 space-y-5 md:flex-row md:items-start md:justify-center lg:mx-5 lg:justify-around">
-        <Image
-          src={
-            data.poster_path
-              ? `https://image.tmdb.org/t/p/w500/${data.poster_path}`
-              : "https://placehold.co/400x500?text=No+image"
-          }
-          alt={data.original_title}
-          width={400}
-          height={500}
-          className="mb-8 h-[22rem] w-[15rem] rounded-3xl object-cover xl:h-[33rem] xl:w-[23rem]"
-        />
+        <div className="relative">
+          <Image
+            src={
+              data.poster_path
+                ? `https://image.tmdb.org/t/p/w500/${data.poster_path}`
+                : "https://placehold.co/400x500?text=No+image"
+            }
+            alt={data.original_title}
+            width={400}
+            height={500}
+            className="mb-8 h-[22rem] w-[15rem] rounded-3xl object-cover xl:h-[33rem] xl:w-[23rem]"
+          />
+          <button
+            type="submit"
+            className="absolute bottom-16 right-8"
+            // @ts-ignore
+            onClick={handleAddToFavorites}
+          >
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  {addedToFavorites ? (
+                    <FaHeart className="cursor-pointer text-5xl text-main-red transition hover:scale-110" />
+                  ) : (
+                    <FaRegHeart className="cursor-pointer text-5xl text-main-red transition hover:scale-110" />
+                  )}
+                </TooltipTrigger>
+                <TooltipContent className="h-fit w-fit text-lg">
+                  <p>Add to Favorites</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </button>
+          <button
+            type="submit"
+            className="absolute left-6 top-0"
+            // @ts-ignore
+            onClick={handleAddToWatchList}
+          >
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  {addedToWatchlist ? (
+                    <FaBookmark className="cursor-pointer text-6xl text-main-red transition hover:scale-110" />
+                  ) : (
+                    <FaRegBookmark className="cursor-pointer text-6xl text-main-red transition hover:scale-110" />
+                  )}
+                </TooltipTrigger>
+                <TooltipContent className="h-fit w-fit text-lg">
+                  <p>Add to Watchlist</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </button>
+        </div>
         <div className="flex flex-col justify-center space-y-3 text-center">
           {data.title.length > 25 ? (
             <h3 className="text-3xl xl:text-4xl">
@@ -93,7 +188,7 @@ const MovieInformation = () => {
               <span>{data.vote_average.toFixed(1)} / 10</span>
             </div>
             <p>
-              {data.runtime} min /{" "}
+              {data.runtime > 0 && `${data.runtime} min /`}
               {data.spoken_languages.length > 0
                 ? data.spoken_languages[0].english_name
                 : ""}
@@ -260,7 +355,10 @@ const MovieInformation = () => {
           )}
         </div>
         <div className="flex space-x-6 overflow-x-scroll md:max-w-full lg:hidden">
-          <Actors data={data} />
+          <Actors
+            data={data}
+            // character={data.credits.cast[0].character}
+          />
         </div>
         {recommendError && (
           <div className="grid h-32 place-content-center text-xl">

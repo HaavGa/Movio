@@ -1,15 +1,15 @@
-type GenerateMetadataProps = {
+type TGenerateMetadataProps = {
   params: {
     id: number;
   };
 };
 
-type GenreArray = {
+type TGenreArray = {
   id: number;
   name: string;
 }[];
 
-type Name = {
+type TName = {
   adult: boolean;
   also_known_as: string;
   biography: string;
@@ -26,13 +26,13 @@ type Name = {
   profile_path: string;
 };
 
-type NameQueryProps = {
-  data: Name;
+type TNameQueryProps = {
+  data: TName;
   isFetching: boolean;
   error: boolean;
 };
 
-type MovieInfo = {
+type TMovieInfo = {
   adult: boolean;
   backdrop_path: string;
   belongs_to_collection: null;
@@ -50,7 +50,7 @@ type MovieInfo = {
         profile_path: string;
         cast_id: number;
         character: string;
-        credit_id: string;
+        id: string;
         order: number;
       }
     ];
@@ -64,7 +64,7 @@ type MovieInfo = {
         original_name: string;
         popularity: number;
         profile_path: string;
-        credit_id: string;
+        id: string;
         department: string;
         job: string;
       }
@@ -105,58 +105,58 @@ type MovieInfo = {
   vote_count: number;
 };
 
-type MoviesProps = {
+type TMoviesProps = {
   movies: {
     page: number;
-    results: MovieInfo[];
+    results: TMovieInfo[];
     total_pages: number;
     total_results: number;
   };
 };
 
-type MovieQueryProps = {
-  data: MovieInfo;
+type TMovieQueryProps = {
+  data: TMovieInfo;
   isFetching: boolean;
   error: boolean;
 };
 
-type RecommendMovieQueryProps = {
-  data: MoviesProps["movies"];
+type TRecommendMovieQueryProps = {
+  data: TMoviesProps["movies"];
   isFetching: boolean;
   error: boolean;
 };
 
-type QueryProps = {
+type TQueryProps = {
   genreIdOrCategoryName: string | number;
   page: number;
   searchQuery: string;
 };
 
-type ActorsProps = {
-  data: MovieInfo;
+type TActorsProps = {
+  data: TMovieInfo;
 };
 
-type Cast = MovieInfo["credits"]["cast"];
-type Crew = MovieInfo["credits"]["crew"];
+type TCast = TMovieInfo["credits"]["cast"];
+type TCrew = TMovieInfo["credits"]["crew"];
 
-type PersonListProps = {
-  person: Cast | Crew;
+type TPersonListProps = {
+  person: TCast | TCrew;
   title: string;
 };
 
-type CreditsCollapsibleProps = {
+type TCreditsCollapsibleProps = {
   image: string[];
   id: number[];
   array: string[];
   title: string;
 };
 
-type GenreProps = {
+type TGenreProps = {
   id: number;
   name: string;
 };
 
-type CreditsProps = {
+type TCreditsProps = {
   array: string[];
   id: number[];
   image: string[];
@@ -181,15 +181,41 @@ type TMovie = {
   };
 };
 
-type RatingProps = {
+type TMovieCardProps = TMovie["movie"];
+
+type TRatingProps = {
   rating: number;
   maxRating: number;
 };
 
-type Data = {
+type TData = {
   data: {
     success: boolean;
     expires_at: string;
     request_token: string;
   };
+};
+
+type TPaginationProps = {
+  currentPage: number;
+  totalPages: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+};
+
+type TUser = {
+  user?: {
+    id: string;
+    email: string;
+    aud: string;
+    factors: Factor[] | null;
+    iat: number;
+    iss: string;
+    phone: string | number;
+    role: string;
+    session_id: string;
+  };
+};
+
+type TDisplayCollection = {
+  sCollection: string;
 };

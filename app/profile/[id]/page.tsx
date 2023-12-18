@@ -1,66 +1,81 @@
 "use client";
 
+import DisplayCollection from "@/components/Profile/DisplayCollection";
 import { Button } from "@/components/ui/button";
-import { RootState } from "@/redux/store";
-import Image from "next/image";
+import { toast } from "@/components/ui/use-toast";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { FaBookmark, FaHeart } from "react-icons/fa";
 import { MdExitToApp } from "react-icons/md";
-import { useSelector } from "react-redux";
 
 const Profile = () => {
-  const { user } = useSelector((state: RootState) => state.auth);
+  const [user, setUser] = useState<TUser>({});
+  const router = useRouter();
+  // const pathName = usePathname();
+  // console.log(pathName);
 
-  const favoriteMovies = [];
+  // const parts = pathName.split("/profile/");
+  // const id = parts.length > 1 ? parts[1] : null;
+  // console.log(id);
 
-  const logout = () => {
-    localStorage.clear();
+  useEffect(() => {
+    const getUser = async () => {
+      const supabase = createClientComponentClient();
+      const { data } = await supabase.auth.getSession();
+      setUser(data?.session?.user as TUser);
+    };
+    getUser();
+  }, []);
+
+  // const {
+  //   data: { user },
+  // } = await supabase.auth.getUser();
+
+  // const { user } = useSelector((state: RootState) => state.auth);
+
+  const handleLogout = async () => {
+    const supabase = createClientComponentClient();
     window.location.href = "/";
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      return toast({
+        variant: "destructive",
+        title: "Log out failed! Please try again",
+        description: error.message,
+      });
+    }
+    if (!error) {
+      router.push("/login");
+    }
   };
   return (
     <>
-      <div className="flex justify-between">
+      <div className="mb-3 flex justify-between">
         <div>
           <h1 className="mb-3 text-xl lg:text-3xl">My Profile</h1>
-          <div className="space-y-3">
-            <Image
-              src={
-                user.avatar.tmdb.avatar_path
-                  ? `https://image.tmdb.org/t/p/w200${user.avatar.tmdb.avatar_path}`
-                  : `https://secure.gravatar.com/avatar/${user.avatar.gravatar.hash}?s=200`
-              }
-              alt={user.username}
-              width={50}
-              height={50}
-              className="h-32 w-32 rounded-full object-cover"
-            />
-            <h2 className="text-lg lg:text-2xl">
-              {user.name ? (
-                <>
-                  {user.name} |{" "}
-                  <span className="text-muted-foreground lg:text-xl">
-                    {" "}
-                    {user.username}
-                  </span>
-                </>
-              ) : (
-                <>{user.username}</>
-              )}
-            </h2>
-          </div>
         </div>
         <Button
           variant={"outline"}
           className="uppercase"
-          onClick={logout}
+          onClick={handleLogout}
         >
           Log out &nbsp; <MdExitToApp />
         </Button>
       </div>
-      <div className="text-xl">
-        {!favoriteMovies.length ? (
-          <p>Add some favorites</p>
-        ) : (
-          <p>FAVORITE</p>
-        )}
+      <h2 className="flex justify-center text-2xl">
+        Your favorites
+        <FaHeart className="ml-3 translate-y-1" />
+      </h2>
+      <div className="scale-90">
+        <DisplayCollection sCollection={"favorites"} />
+      </div>
+      <h2 className="flex justify-center text-2xl">
+        Your watchlist
+        <FaBookmark className="ml-3 translate-y-1" />
+      </h2>
+      <div className="scale-90">
+        <DisplayCollection sCollection={"watchlists"} />
       </div>
     </>
   );

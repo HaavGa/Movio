@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const Actors = ({ data }: ActorsProps) => {
-  const cast: Cast = data.credits.cast;
+const Actors = ({ data }: TActorsProps) => {
+  const cast: TCast = data.credits.cast;
   return (
     <>
       {data &&

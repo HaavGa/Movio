@@ -22,7 +22,7 @@ export const auth = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
       state.isAuthenticated = true;
-      state.sessionId = localStorage.getItem("session_id")!!;
+      state.sessionId = localStorage.getItem("session")!!;
 
       localStorage.setItem("accountId", action.payload.id);
     },

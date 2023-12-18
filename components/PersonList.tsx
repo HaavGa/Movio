@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const PersonList = ({ person, title }: PersonListProps) => {
+const PersonList = ({ person, title }: TPersonListProps) => {
   return (
     <div className="flex flex-col">
       <h2 className="my-3 ml-2 text-2xl">{title}</h2>

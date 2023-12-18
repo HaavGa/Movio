@@ -1,5 +1,8 @@
+import { toast } from "@/components/ui/use-toast";
 import axios from "axios";
 import { clsx, type ClassValue } from "clsx";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { MouseEvent } from "react";
 import { twMerge } from "tailwind-merge";
 
 export const cn = (...inputs: ClassValue[]) => {
@@ -12,21 +15,6 @@ export const moviesApi = axios.create({
     api_key: process.env.NEXT_PUBLIC_TMDB_KEY,
   },
 });
-
-export const fetchToken = async () => {
-  try {
-    const { data }: Data = await moviesApi.get(
-      "authentication/token/new"
-    );
-    const { request_token: token } = data;
-    if (data.success) {
-      localStorage.setItem("request_token", token);
-      window.location.href = `http://themoviedb.org/authenticate/${token}?redirect_to=${window.location.origin}`;
-    }
-  } catch (error) {
-    console.log("Sorry your token could not be created");
-  }
-};
 
 export const createSessionId = async () => {
   const token = localStorage.getItem("request_token");
@@ -43,5 +31,43 @@ export const createSessionId = async () => {
     }
   } catch (error) {
     console.log((error as Error).message);
+  }
+};
+
+export const handleAddToCollection = async (
+  e: MouseEvent<HTMLButtonElement, MouseEvent>,
+  collection: string,
+  movie_id: string,
+  poster_path: string,
+  title: string,
+  vote_average: number,
+  router: AppRouterInstance
+) => {
+  e.preventDefault();
+
+  const document = {
+    id: movie_id,
+    poster_path,
+    title,
+    vote_average,
+  };
+  console.log(`/api/${collection}`);
+  const res = await fetch(`/api/${collection}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(document),
+  });
+  const json = await res.json();
+  console.log(json);
+  if (json.error) {
+    return toast({
+      variant: "destructive",
+      title: `Could not add to ${collection}! Please try again`,
+      description: json.error.message,
+    });
+  }
+  if (json.data) {
+    router.refresh();
+    router.push("/");
   }
 };
