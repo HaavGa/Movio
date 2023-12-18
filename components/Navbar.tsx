@@ -255,12 +255,12 @@ const Navbar = ({ user }: TUser) => {
           <div>
             {!isAuthenticated ? (
               <>
-                <Link href="/login">
+                <Link href="/register">
                   <Button
                     variant="ghost"
                     className=" text-base uppercase text-white"
                   >
-                    Profile &nbsp; <MdAccountCircle size={20} />
+                    Register &nbsp; <MdAccountCircle size={20} />
                   </Button>
                 </Link>
               </>

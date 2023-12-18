@@ -78,10 +78,7 @@ const MovieInformation = () => {
     .map(dir => dir.id);
 
   const handleAddToFavorites = (
-    e: React.MouseEvent<
-      HTMLButtonElement,
-      MouseEvent<Element, MouseEvent>
-    >
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     handleAddToCollection(
       e,
@@ -95,10 +92,7 @@ const MovieInformation = () => {
   };
 
   const handleAddToWatchList = (
-    e: React.MouseEvent<
-      HTMLButtonElement,
-      MouseEvent<Element, MouseEvent>
-    >
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     handleAddToCollection(
       e,
