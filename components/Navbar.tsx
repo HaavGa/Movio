@@ -135,7 +135,7 @@ const Navbar = ({ user }: TUser) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col bg-main-red p-5 shadow-md sm:pl-72">
+      <div className="flex flex-col bg-primary p-5 shadow-md sm:pl-72">
         <div
           className={cn(
             "mt-2 flex h-fit items-start justify-between text-black sm:mt-0 sm:h-full sm:items-center",

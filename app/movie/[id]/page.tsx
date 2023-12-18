@@ -130,9 +130,9 @@ const MovieInformation = () => {
               <Tooltip>
                 <TooltipTrigger>
                   {addedToFavorites ? (
-                    <FaHeart className="cursor-pointer text-5xl text-main-red transition hover:scale-110" />
+                    <FaHeart className="cursor-pointer text-5xl text-primary transition hover:scale-110" />
                   ) : (
-                    <FaRegHeart className="cursor-pointer text-5xl text-main-red transition hover:scale-110" />
+                    <FaRegHeart className="cursor-pointer text-5xl text-primary transition hover:scale-110" />
                   )}
                 </TooltipTrigger>
                 <TooltipContent className="h-fit w-fit text-lg">
@@ -151,9 +151,9 @@ const MovieInformation = () => {
               <Tooltip>
                 <TooltipTrigger>
                   {addedToWatchlist ? (
-                    <FaBookmark className="cursor-pointer text-6xl text-main-red transition hover:scale-110" />
+                    <FaBookmark className="cursor-pointer text-6xl text-primary transition hover:scale-110" />
                   ) : (
-                    <FaRegBookmark className="cursor-pointer text-6xl text-main-red transition hover:scale-110" />
+                    <FaRegBookmark className="cursor-pointer text-6xl text-primary transition hover:scale-110" />
                   )}
                 </TooltipTrigger>
                 <TooltipContent className="h-fit w-fit text-lg">

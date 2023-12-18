@@ -42,7 +42,7 @@ const Profile = () => {
       <div className="mb-3 flex justify-between">
         <div>
           <h1 className="mb-3 text-xl lg:text-3xl">
-            Welcome {user && user.email}
+            Welcome back, {user && user.email}
           </h1>
         </div>
         <Button
@@ -55,14 +55,14 @@ const Profile = () => {
       </div>
       <h2 className="flex justify-center text-2xl">
         Your favorites
-        <FaHeart className="ml-3 translate-y-1" />
+        <FaHeart className="ml-3 translate-y-1 text-primary" />
       </h2>
       <div className="scale-90">
         <DisplayCollection displayCollection={"favorites"} />
       </div>
       <h2 className="flex justify-center text-2xl">
         Your watchlist
-        <FaBookmark className="ml-3 translate-y-1" />
+        <FaBookmark className="ml-3 translate-y-1 text-primary" />
       </h2>
       <div className="scale-90">
         <DisplayCollection displayCollection={"watchlists"} />

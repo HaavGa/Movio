@@ -74,7 +74,8 @@ const Name = () => {
     country === "usa" ||
     country === "u.s." ||
     country === "u.s" ||
-    country === "united states"
+    country === "united states" ||
+    country === "michigan. usa"
   )
     country = "united-states-of-america";
   if (country === "england" || country === "uk")

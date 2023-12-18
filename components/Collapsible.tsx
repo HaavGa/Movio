@@ -31,7 +31,7 @@ const CreditsCollapsible = ({
           <Button
             variant="default"
             size="sm"
-            className="w-9 -translate-x-3 p-0 text-white hover:bg-blue-600 dark:bg-main-red dark:hover:bg-red-600"
+            className="w-9 -translate-x-3 bg-primary p-0 text-white hover:bg-red-600"
           >
             <BsChevronDown
               className={cn(

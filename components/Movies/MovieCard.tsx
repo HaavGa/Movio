@@ -102,9 +102,9 @@ const MovieCard = ({
                       className="inline-block transition"
                     >
                       {isHovering ? (
-                        <CiBookmarkRemove className="text-4xl text-main-red hover:text-white" />
+                        <CiBookmarkRemove className="text-4xl text-primary hover:text-white" />
                       ) : (
-                        <CiBookmark className="text-4xl text-main-red hover:text-white" />
+                        <CiBookmark className="text-4xl text-primary hover:text-white" />
                       )}
                     </div>
                   ) : (
@@ -114,9 +114,9 @@ const MovieCard = ({
                       className="inline-block transition"
                     >
                       {isHovering ? (
-                        <FaHeartBroken className="text-4xl text-main-red hover:text-white" />
+                        <FaHeartBroken className="text-4xl text-primary hover:text-white" />
                       ) : (
-                        <FaHeart className="text-4xl text-main-red hover:text-white" />
+                        <FaHeart className="text-4xl text-primary hover:text-white" />
                       )}
                     </div>
                   )}
