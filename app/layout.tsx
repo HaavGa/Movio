@@ -51,7 +51,7 @@ const RootLayout = async ({
             defaultTheme="system"
             enableSystem
           >
-            <Navbar user={data.session?.user} />
+            <Navbar user={data?.session?.user as TUser["user"]} />
             <div className="grow p-10">
               {/* <Toolbar /> */}
               <div className="sm:ml-64">

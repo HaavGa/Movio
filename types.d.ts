@@ -179,6 +179,7 @@ type TMovie = {
     vote_average: number;
     // vote_count: number;
   };
+  displayCollection?: string;
 };
 
 type TMovieCardProps = TMovie["movie"];
@@ -217,5 +218,12 @@ type TUser = {
 };
 
 type TDisplayCollection = {
-  sCollection: string;
+  displayCollection: string;
+};
+
+type TParamsProps = {
+  params: {
+    id: string;
+    displayCollection: string;
+  };
 };

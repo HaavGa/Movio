@@ -276,13 +276,8 @@ const Navbar = ({ user }: TUser) => {
                     </span>
                     <Avatar className="h-8 w-8">
                       <AvatarImage
-                        // src={
-                        //   user.avatar.tmdb.avatar_path
-                        //     ? `https://image.tmdb.org/t/p/w200${user.avatar.tmdb.avatar_path}`
-                        //     : `https://secure.gravatar.com/avatar/${user.avatar.gravatar.hash}?s=200`
-                        // }
                         src={
-                          "https://secure.gravatar.com/avatar/1?s=200"
+                          "https://p1.hiclipart.com/preview/474/453/265/woman-hair-silhouette-male-person-portrait-neck-head-shoulder-png-clipart.jpg"
                         }
                       />
                       <AvatarFallback>CN</AvatarFallback>

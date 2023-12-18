@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 const Credits = ({ array, id, image }: TCreditsProps) => {
-  console.log(array, id, image);
   return (
     <Link
       href={`/name/${id[0]}`}

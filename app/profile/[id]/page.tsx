@@ -12,18 +12,12 @@ import { MdExitToApp } from "react-icons/md";
 const Profile = () => {
   const [user, setUser] = useState<TUser>({});
   const router = useRouter();
-  // const pathName = usePathname();
-  // console.log(pathName);
-
-  // const parts = pathName.split("/profile/");
-  // const id = parts.length > 1 ? parts[1] : null;
-  // console.log(id);
 
   useEffect(() => {
     const getUser = async () => {
       const supabase = createClientComponentClient();
-      const { data } = await supabase.auth.getSession();
-      setUser(data?.session?.user as TUser);
+      const { data } = await supabase.auth.getUser();
+      setUser(data.user as TUser);
     };
     getUser();
   }, []);
@@ -53,7 +47,7 @@ const Profile = () => {
     <>
       <div className="mb-3 flex justify-between">
         <div>
-          <h1 className="mb-3 text-xl lg:text-3xl">My Profile</h1>
+          <h1 className="mb-3 text-xl lg:text-3xl">My profile</h1>
         </div>
         <Button
           variant={"outline"}
@@ -68,14 +62,14 @@ const Profile = () => {
         <FaHeart className="ml-3 translate-y-1" />
       </h2>
       <div className="scale-90">
-        <DisplayCollection sCollection={"favorites"} />
+        <DisplayCollection displayCollection={"favorites"} />
       </div>
       <h2 className="flex justify-center text-2xl">
         Your watchlist
         <FaBookmark className="ml-3 translate-y-1" />
       </h2>
       <div className="scale-90">
-        <DisplayCollection sCollection={"watchlists"} />
+        <DisplayCollection displayCollection={"watchlists"} />
       </div>
     </>
   );

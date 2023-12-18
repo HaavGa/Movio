@@ -17,11 +17,6 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { useToast } from "@/components/ui/use-toast";
-// import { useUserContext } from "@/context/AuthContext";
-// import {
-//   useCreateUserAccount,
-//   useSignInAccount,
-// } from "@/lib/react-query/queriesAndMutations";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Logo from "/public/logos/movio-red.png";
@@ -29,16 +24,6 @@ import Logo from "/public/logos/movio-red.png";
 const Register = () => {
   const router = useRouter();
   const { toast } = useToast();
-  // const { checkAuthUser, isLoading: isUserLoading } =
-  //   useUserContext();
-
-  // const {
-  //   mutateAsync: createUserAccount,
-  //   isPending: isCreatingAccount,
-  // } = useCreateUserAccount();
-
-  // const { mutateAsync: signInAccount, isPending: isSigningIn } =
-  //   useSignInAccount();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof RegisterValidation>>({
@@ -55,26 +40,6 @@ const Register = () => {
   const onSubmit = async (
     values: z.infer<typeof RegisterValidation>
   ) => {
-    // const newUser = await createUserAccount(values);
-    // if (!newUser)
-    //   return toast({
-    //     title: "Sign up failed! Please try again",
-    //   });
-    // const session = await signInAccount({
-    //   email: values.email,
-    //   password: values.password,
-    // });
-    // if (!session)
-    //   return toast({
-    //     title: "Sign up failed! Please try again",
-    //   });
-    // const isLoggedIn = await checkAuthUser();
-    // if (isLoggedIn) {
-    //   form.reset();
-    //   router.push("/");
-    // } else {
-    //   return toast({ title: "Sign in failed! Please try again" });
-    // }
     const supabase = createClientComponentClient();
     const { error } = await supabase.auth.signUp({
       ...values,
